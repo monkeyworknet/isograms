@@ -13,38 +13,35 @@ import "unicode"
 
 func main() {
 
-pkger.Include("/data")
-word := getword()
+	pkger.Include("/data")
+	word := getword()
 
+	intro := []string{
+		"=============================================================== \n",
+		"Welcome to Pigs & Bulls a word guessing game. \n",
+		"I've selected a secret word and I'd like you to guess it. \n",
+		"The word will not have any repeating letters in it. \n",
+		"The word will be five characters long \n",
+		"For every letter in the word you guess that matches both \n",
+		"position and actual character you will get a bull.   If you \n",
+		"match only character and not position you get a pig. \n",
+		"\n",
+		"For example if my word was Bump and you guessed Lump you\n",
+		"would get 0 pigs and 3 bulls (the ump matches exact).   If\n",
+		"you had guessed Pole you'd get 1 pig (for the p) and 0 bulls.\n",
+		"\n",
+		"You have 20 turns to complete this.   Best of Luck!\n",
+		"===============================================================\n",
+	}
 
+	//change this in future.
 
-intro := []string{
-"=============================================================== \n",
-"Welcome to Pigs & Bulls a word guessing game. \n",
-"I've selected a secret word and I'd like you to guess it. \n",
-"The word will not have any repeating letters in it. \n",
-"The word will be five characters long \n",
-"For every letter in the word you guess that matches both \n",
-"position and actual character you will get a bull.   If you \n", 
-"match only character and not position you get a pig. \n",
-"\n",
-"For example if my word was Bump and you guessed Lump you\n",
-"would get 0 pigs and 3 bulls (the ump matches exact).   If\n", 
-"you had guessed Pole you'd get 1 pig (for the p) and 0 bulls.\n",
-"\n",
-"You have 20 turns to complete this.   Best of Luck!\n",
-"===============================================================\n",
-}
+	fmt.Println(intro)
 
-
-fmt.Println(intro)
-	
-	
-	
 	turncount := 1
 	maxturn := 20
 
-// main game loop
+	// main game loop
 
 	for turncount <= maxturn {
 		guess := getinput()
@@ -77,17 +74,18 @@ fmt.Println(intro)
 		_, _ = reader.ReadString('\n')
 	}
 
-
 }
 
 func checkisogram(w string) bool {
-		
+
 	//convert string to lowercase
 	w = strings.ToLower(w)
 
 	//read over string checking to see if any character duplicates
 	for _, c := range w {
-		if strings.Count(w, string(c)) > 1 { return false}
+		if strings.Count(w, string(c)) > 1 {
+			return false
+		}
 	}
 
 	return true
@@ -97,7 +95,9 @@ func checkisogram(w string) bool {
 func checkalpha(w string) bool {
 
 	for _, c := range w {
-		if !unicode.IsLetter(c) {return false}
+		if !unicode.IsLetter(c) {
+			return false
+		}
 	}
 
 	return true
@@ -109,7 +109,7 @@ func getinput() string {
 	valid := false
 	var guess string
 
-	// loop until valid input 
+	// loop until valid input
 
 	for valid == false {
 
@@ -119,14 +119,12 @@ func getinput() string {
 		guess, _ = reader.ReadString('\n')
 		guess = strings.TrimSpace(guess)
 
-
-
 		// Confirm it is alphabetic only
 		alpha := checkalpha(guess)
-		if alpha == false { 
+		if alpha == false {
 			fmt.Println("SORRY - LETTERS ONLY PLEASE")
 			continue
-		} 
+		}
 
 		// Confirm it is an isogram
 		iso := checkisogram(guess)
@@ -149,7 +147,7 @@ func getinput() string {
 
 }
 
-func pigsandbulls(guess string, isogram string) (bulls int, pigs int){
+func pigsandbulls(guess string, isogram string) (bulls int, pigs int) {
 	// pigs are defined as having a character correct but incorrect location
 	// bulls are defined as having a character correct and in correct location
 
@@ -170,13 +168,12 @@ func pigsandbulls(guess string, isogram string) (bulls int, pigs int){
 
 	}
 
-
 	return pigs, bulls
 }
 
-func getword() string{
+func getword() string {
 
-//Read in words.txt create a text slice to randomly select from.
+	//Read in words.txt create a text slice to randomly select from.
 	f, _ := pkger.Open("/data/words.txt")
 	defer f.Close()
 
